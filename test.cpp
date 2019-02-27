@@ -31,7 +31,7 @@
 const int dd[] = {-1,0,1,0,-1,1,1,-1}; //up,right,down,left,upright,downright,downleft,upleft
 const int cc[] = {0,1,0,-1,1,1,-1,-1};
 
-const int maxN = 300005;
+const int maxN = 0;
 const int maxM = 0;
 const ll MOD = 1000000007LL;
 
