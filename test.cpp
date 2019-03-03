@@ -27,7 +27,7 @@
 #define base 1000000007LL
 #define eps 1e-8
 
-const int dd[] = {-1,0,1,0,-1,1,1,-1}; //up,right,down,left,upright,downright,downleft,upleft
+const int dd[] = {-1,0,1,0,-1,1,1,-1};//up,right,down,left,upright,downright,downleft,upleft
 const int cc[] = {0,1,0,-1,1,1,-1,-1};
 
 const int maxN = 0;
