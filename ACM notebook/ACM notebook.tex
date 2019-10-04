@@ -1,0 +1,309 @@
+\documentclass[A4 paper, 12pt]{article}
+
+\usepackage[a4paper, total={6.75in, 10in}]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegreener}{rgb}{0,0.7,0}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.9,0.9,0.9}
+\definecolor{codeblue}{rgb}{0.1,0.457,1} 
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codeblue},
+    numberstyle=\color{codegreener},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+
+\lstset{style=mystyle}
+
+\title{ACM Notebook team HCMUS-KMN}
+\author{KMN}
+\begin{document}
+	\maketitle
+	\newpage
+
+	\section{Some define}
+	\begin{lstlisting}[language=C++]
+#include <bits/stdc++.h>
+ 
+#define maxN
+#define matrix_size 2
+#define base 1000000007LL
+#define eps 1e-8
+
+#define cross(A,B) (A.x*B.y-A.y*B.x)
+#define dot(A,B) (A.x*B.x+A.y*B.y)
+#define ccw(A,B,C) (-(A.x*(C.y-B.y) + B.x*(A.y-C.y) + C.x*(B.y-A.y))) // positive when ccw
+#define CROSS(a,b,c,d) (a*d - b*c)
+\end{lstlisting}
+	\section{Geometry}
+	\begin{lstlisting}[language=C++]
+struct line
+{
+	double a,b,c;
+	line() {}
+	line(double A,double B,double C):a(A),b(B),c(C){}
+	line(Point A,Point B)
+	{
+    	a=A.y-B.y; b=B.x-A.x; c=-a*A.x-b*A.y;
+	}
+};
+ 
+Point intersect(line AB,line CD)
+{
+	AB.c=-AB.c; CD.c=-CD.c;
+	double D=CROSS(AB.a,AB.b,CD.a,CD.b);
+	double Dx=CROSS(AB.c,AB.b,CD.c,CD.b);
+	double Dy=CROSS(AB.a,AB.c,CD.a,CD.c);
+	if (D==0.0) return Point(1e9,1e9);
+	else return Point(Dx/D,Dy/D);
+}
+\end{lstlisting}
+	\section{Dinic}
+	\begin{lstlisting}[language=C++]
+bool BFS()
+{
+	queue<int> q;
+	for (int i=1; i<=n; i++) d[i]=0,Free[i]=true;
+	q.push(s);
+	d[s]=1;
+	while (!q.empty())
+	{
+    	int u=q.front(); q.pop();
+    	for (int i=0; i<DSK[u].size(); i++)
+    	{
+        	int v=DSK[u][i].fi;
+        	if (d[v]==0 && DSK[u][i].se>f[u][v])
+        	{
+            	d[v]=d[u]+1;
+            	q.push(v);
+        	}
+    	}
+	}
+	return d[t]!=0;
+}
+ 
+int DFS(int x,int delta)
+{
+	if (x==t) return delta;
+	Free[x]=false;
+	for (int i=0; i<DSK[x].size(); i++)
+	{
+    	int y=DSK[x][i].fi;
+    	if (d[y]==d[x]+1 && f[x][y]<DSK[x][i].se && Free[y])
+    	{
+        	int tmp=DFS(y,min(delta,DSK[x][i].se-f[x][y]));
+        	if (tmp>0)
+        	{
+            	f[x][y]+=tmp; f[y][x]-=tmp; return tmp;
+        	}
+    	}
+	}
+	return 0;
+}
+\end{lstlisting}
+
+	\section{Mincost}
+	\begin{lstlisting}[language=C++]
+int calc(int x,int y){ return (x>=0) ? y : 0-y; }
+ 
+bool findpath()
+{
+	for (int i=1; i<=n; i++){ trace[i]=0; d[i]=inf; } q.push(n); d[n]=0;
+	while (!q.empty())
+	{
+    	int u=q.front(); q.pop(); inq[u]=false;
+    	for (int i=0; i<DSK[u].size(); i++)
+    	{
+        	int v=DSK[u][i];
+        	if (c[u][v]>f[u][v] && d[v]>d[u]+calc(f[u][v],cost[u][v]))
+        	{
+            	trace[v]=u;
+                d[v]=d[u]+calc(f[u][v],cost[u][v]);
+            	if (!inq[v])
+            	{
+           	     inq[v]=true;
+                	q.push(v);
+            	}
+        	}
+    	}
+	}
+	return d[t]!=inf;
+}
+ 
+void incflow()
+{
+	int v=t,delta=inf;
+	while (v!=n)
+	{
+    	int u=trace[v];
+    	if (f[u][v]>=0) delta=min(delta,c[u][v]-f[u][v]);
+    	else delta=min(delta,0-f[u][v]);
+    	v=u;
+	}
+	v=t;
+	while (v!=n)
+	{
+    	int u=trace[v];
+    	f[u][v]+=delta; f[v][u]-=delta;
+    	v=u;
+	}
+}
+\end{lstlisting}
+	\section{HLD}
+	\begin{lstlisting}[language=C++]
+void DFS(int x,int pa)
+{
+    DD[x]=DD[pa]+1; child[x]=1; int Max=0;
+    for (int i=0; i<DSK[x].size(); i++)
+    {
+        int y=DSK[x][i].fi;
+        if (y==pa) continue;
+        p[y]=x;
+        d[y]=d[x]+DSK[x][i].se;
+        DFS(y,x);
+        child[x]+=child[y];
+        if (child[y]>Max)
+        {
+            Max=child[y];
+            tree[x]=tree[y];
+        }
+    }
+    if (child[x]==1) tree[x]=++nTree;
+}
+
+void init()
+{
+    nTree=0;
+    DFS(1,1);
+    DD[0]=long(1e9);
+    for (int i=1; i<=n; i++) if (DD[i]<DD[root[tree[i]]]) root[tree[i]]=i;
+}
+
+int LCA(int u,int v)
+{
+    while (tree[u]!=tree[v])
+    {
+        if (DD[root[tree[u]]]<DD[root[tree[v]]]) v=p[root[tree[v]]];
+        else u=p[root[tree[u]]];
+    }
+    if (DD[u]<DD[v]) return u; else return v;
+}
+\end{lstlisting}
+	\section{Cầu khớp}
+Nút u là khớp: 
+if (low[v] >= num[u]) arti[u] = arti[u] || p[u] != -1 || child[u] >= 2;\\
+Cạnh u, v là cầu khi low[v] >= num[v]
+	\section{Monotone chain}
+	\begin{lstlisting}[language=C++]
+void convex_hull (vector<pt> & a) {
+  if (a.size() == 1) { // chỉ có 1 điểm
+    return;
+  }
+
+  // Sort with respect to x and then y
+  sort(a.begin(), a.end(), &cmp);
+
+  pt p1 = a[0],  p2 = a.back();
+
+  vector<pt> up, down; 
+  up.push_back (p1);
+  down.push_back (p1);
+
+  for (size_t i=1; i<a.size(); ++i) { 
+    // Add to the upper chain
+    
+    if (i==a.size()-1 || cw (p1, a[i], p2)) {
+      while (up.size()>=2 && !cw (up[up.size()-2], up[up.size()-1], a[i]))
+        up.pop_back();
+      up.push_back (a[i]);
+    }
+
+    // Add to the lower chain
+    if (i==a.size()-1 || ccw (p1, a[i], p2)) {
+      while (down.size()>=2 && !ccw (down[down.size()-2], down[down.size()-1], a[i]))
+        down.pop_back();
+      down.push_back (a[i]);
+    }
+  }
+
+  // Merge 2 chains
+  a.clear();
+  for (size_t i=0; i<up.size(); ++i)
+    a.push_back (up[i]);
+  for (size_t i=down.size()-2; i>0; --i)
+    a.push_back (down[i]);
+}
+\end{lstlisting}
+	\section{MST}
+	Prim: remember to have visited array
+	\section{Bignum mul}
+	\begin{lstlisting}[language=C++]
+string mul(string a,string b)
+{
+   int m=a.length(),n=b.length(),sum=0;
+   string c="";
+   for (int i=m+n-1; i>=0; i--)
+   {
+       for (int j=0; j<m; j++) if (i-j>0 && i-j<=n) sum+=(a[j]-'0')*(b[i-j-1]-'0');
+       c=(char)(sum%10+'0')+c;
+       sum/=10;
+   }
+   while (c.length()>1 && c[0]=='0') c.erase(0,1);
+   return c;
+}
+\end{lstlisting}
+	\section{Prime under 100}
+	2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97 
+	\section{Pascal triangle C(n,k)=number from line 0, column 0}
+1\\
+1 1\\
+1 2 1\\ 
+1 3 3 1\\ 
+1 4 6 4 1\\ 
+1 5 10 10 5 1\\ 
+1 6 15 20 15 6 1\\ 
+1 7 21 35 35 21 7 1\\
+1 8 28 56 70 56 28 8 1\\ 
+1 9 36 84 126 126 84 36 9 1\\
+1 10 45 120 210 252 210 120 45 10 1
+	\section{Fibo}
+	0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765
+	\section{Tips}
+	\begin{enumerate}[topsep=0pt, partopsep=0pt, itemsep=0pt]
+	\item Giả sử nó là số nguyên tố đi. Giả sử nó liên quan tới số nguyên tố đi.\\
+	\item Giả sử nó là số có dạng \(2^n\) đi.\\
+	\item Giả sử chọn tối đa là 2, 3 số gì là có đáp án đi.\\
+	\item Có liên quan gì tới Fibonacci hay tam giác pascal?\\
+	\item Dãy này đơn điệu không em ei? Hay tổng của 2,3 số fibonacci?\\
+	\item q <= 2\\
+	\item Sort lại đi, biết đâu thấy điều hay hơn?\\
+	\item Chia nhỏ ra xem.\\
+	\item Bỏ hết những thằng ko cần thiết ra\\
+	\item Áp đại data struct nào đấy vô\\
+	\item khóc\\
+	\item Cầu nguyện\\
+	\item Random shuffe để ac\\
+	\item Xoay mảng 45 độ\\
+	\end{enumerate}
+
+
+
+\end{document}
