@@ -1,12 +1,14 @@
 \documentclass[A4 paper, 12pt, oneside]{article}
 
-\usepackage[a4paper,left=0.8cm,right=0.7-8cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[a4paper,left=0.8cm,right=0.8cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage[utf8]{inputenc}
 \usepackage{enumitem}
 \usepackage{amsmath}
 \usepackage{multicol}
+\usepackage{indentfirst}
+\usepackage{breqn}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegreener}{rgb}{0,0.7,0}
@@ -88,6 +90,17 @@ Cạnh u, v là cầu khi low[v] >= num[v]
 	
 	\subsection{Z function}
 	\lstinputlisting[language=C++]{zfunction.cpp}
+	
+	\subsection{KMP}
+	\lstinputlisting[language=C++]{KMP.cpp}
+	
+	\subsection{Hash 2D}
+	\begin{dmath}
+	H[i][j] = H[i - 1][j] * p + H[i][j - 1] * q - H[i - 1][j - 1] * p * q + s[i][j]
+	\end{dmath}
+	\begin{dmath}
+	Hash(a,b)(x,y) = H[x][y] - H[a - 1][y]*p^{x - a + 1} - H[x][b - 1]*q^{y - b + 1} + H[a - 1][b - 1] * p^{x - a + 1} * q^{y - b + 1}
+	\end{dmath}
 
 \section{Math}	
 	\subsection{Derivatives and integrals}
@@ -153,7 +166,26 @@ Cạnh u, v là cầu khi low[v] >= num[v]
 
 	\subsection{PollardRho}
 	\lstinputlisting[language=C++]{PollardRho.cpp}
+
+\section{Theorem}
+	\subsection{Fermat's little theorem}
+	If $p$ is a prime number, then for any number $a$, \(a^p - a\) is an integer multiple of $p$ \\
+	\[a ^ p \equiv a \ (mod \ p)\]  \\
+	If $a$ is not divisible by $p$ \\
+	\[a ^ {p - 1} \equiv 1 \ (mod \ p)\] 
 	
+	\subsection{Euler's totient function}
+	The number of coprime $\leq n$ \\
+	\[\phi(n) = n \prod (1 - \frac{1}{p}) \] \\
+	With $p$ is the prime divided by $n$
+	
+	\subsection{Dirichlet}
+	Given $n$ holes and $n + 1$ pigeons to distribute evenly, then at least $1$ hole must have $2$ pigeons
+	
+	\subsection{Pythagorean triple}
+	\[a = m^2 - n^2, \ b = 2mn, \ c = m^2 + n^2 \] \\
+	where $m$ and $n$ are positive integer with $m > n$, and with $m$ and $n$ are coprime and not both odd.
+
 \section{Other}
 	\subsection{Bignum mul}
 	\lstinputlisting[language=C++]{bignum.cpp}
@@ -163,12 +195,29 @@ Cạnh u, v là cầu khi low[v] >= num[v]
 	
 	\subsection{Builtin bit function}
 	\lstinputlisting[language=C++]{bitfunction.cpp}
+	
+	\subsection{Pythagorean triples}
+	c under 100 there are 16 triples:
+	(3, 4, 5)	(5, 12, 13)	(8, 15, 17)	(7, 24, 25)
+(20, 21, 29)	(12, 35, 37)	(9, 40, 41)	(28, 45, 53)
+(11, 60, 61)	(16, 63, 65)	(33, 56, 65)	(48, 55, 73)
+(13, 84, 85)	(36, 77, 85)	(39, 80, 89)	(65, 72, 97) \\
+
+	$100 \leq c \leq 300$:
+	(20, 99, 101)	(60, 91, 109)	(15, 112, 113)	(44, 117, 125)
+(88, 105, 137)	(17, 144, 145)	(24, 143, 145)	(51, 140, 149)
+(85, 132, 157)	(119, 120, 169)	(52, 165, 173)	(19, 180, 181)
+(57, 176, 185)	(104, 153, 185)	(95, 168, 193)	(28, 195, 197)
+(84, 187, 205)	(133, 156, 205)	(21, 220, 221)	(140, 171, 221)
+(60, 221, 229)	(105, 208, 233)	(120, 209, 241)	(32, 255, 257)
+(23, 264, 265)	(96, 247, 265)	(69, 260, 269)	(115, 252, 277)
+(160, 231, 281)	(161, 240, 289)	(68, 285, 293)
 
 	\subsection{Sieve}
 	for (int j = i; j * i <= lim; ++j) notPrime[j * i] = true
 
 	\subsection{Catalan}
-\(\frac{(2n)!}{(n + 1)!n!} = \prod_{k = 2}^n \frac{n + k}{k} \)
+	\[\frac{(2n)!}{(n + 1)!n!} = \prod_{k = 2}^n \frac{n + k}{k} \]
 
 	\subsection{Prime under 100}
 	2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97 
@@ -188,7 +237,7 @@ C(n,k)=number from line 0, column 0\\
 	\subsection{Fibo}
 	0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765
 	\section{Tips}
-	\begin{enumerate}[topsep=0pt, partopsep=0pt, itemsep=0pt]
+	\begin{itemize}[topsep=0pt, partopsep=0pt, itemsep=0pt]
 	\item Test kĩ trước khi nộp. Code nhìn đúng chưa chắc đúng đâu
 	\item Test conner case
 	\item Giả sử nó là số nguyên tố đi. Giả sử nó liên quan tới số nguyên tố đi.\\
@@ -196,7 +245,7 @@ C(n,k)=number from line 0, column 0\\
 	\item Giả sử chọn tối đa là 2, 3 số gì là có đáp án đi.\\
 	\item Có liên quan gì tới Fibonacci hay tam giác pascal?\\
 	\item Dãy này đơn điệu không em ei? Hay tổng của 2,3 số fibonacci?\\
-	\item q <= 2\\
+	\item \(q \leq 2\)\\
 	\item Sort lại đi, biết đâu thấy điều hay hơn?\\
 	\item Chia nhỏ ra xem.\\
 	\item Bỏ hết những thằng ko cần thiết ra\\
@@ -205,8 +254,12 @@ C(n,k)=number from line 0, column 0\\
 	\item Cầu nguyện\\
 	\item Random shuffe để ac\\
 	\item Xoay mảng 45 độ\\
-	\end{enumerate}
+	\end{itemize}
 
 	\end{multicols}
 
+	\centering
+	\Huge
+	\textcolor{blue}{\textbf{Keep Smilling}} \\
+	\textcolor{blue}{Gotta solve them all}
 \end{document}
