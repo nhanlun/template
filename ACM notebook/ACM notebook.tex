@@ -10,6 +10,10 @@
 \usepackage{indentfirst}
 \usepackage{breqn}
 
+%\usepackage{mathtools}
+%\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+%\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegreener}{rgb}{0,0.7,0}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -57,7 +61,21 @@
 	
 \section{Some definition}
 	\lstinputlisting[language=C++]{define.cpp}
+
+\section{Data structure}
+	\subsection{AVL tree}
+	\lstinputlisting[language=C++]{AVL.cpp}
 	
+	\subsection{Set and map}
+	Use set.lower_bound() instead of lower_bound(set.begin(), set.end()) for better performance \\
+	The same is true for map
+	
+	\subsection{BIT}
+	\lstinputlisting[language=C++]{BIT.cpp}
+	
+	\subsection{IT2D}
+	\lstinputlisting[language=C++]{IT2D.cpp}
+
 \section{Graph}
 	\subsection{Dinic}
 	\lstinputlisting[language=C++]{Dinic.cpp}
@@ -146,6 +164,9 @@ Cạnh u, v là cầu khi low[v] >= num[v]
     \end{align*}
     where $r=\sqrt{a^2+b^2}, \phi=\operatorname{atan2}(b,a)$.
 
+	\subsection{Gaussian elimination}
+	\lstinputlisting[language=C++]{Gaussian.cpp}	    
+
 	\subsection{Geometry}
 	\lstinputlisting[language=C++]{geometry.cpp}
 	
@@ -185,6 +206,11 @@ Cạnh u, v là cầu khi low[v] >= num[v]
 	\subsection{Pythagorean triple}
 	\[a = m^2 - n^2, \ b = 2mn, \ c = m^2 + n^2 \] \\
 	where $m$ and $n$ are positive integer with $m > n$, and with $m$ and $n$ are coprime and not both odd.
+	
+	\subsection{Legendre's formula}
+	Factor $n!$
+	\[v_p(n!) = \sum_{i = 1}^{\infty} \left \lfloor \frac{n}{p ^ i} \right \rfloor \]
+	With $p$ is prime
 
 \section{Other}
 	\subsection{Bignum mul}
@@ -240,6 +266,8 @@ C(n,k)=number from line 0, column 0\\
 	\begin{itemize}[topsep=0pt, partopsep=0pt, itemsep=0pt]
 	\item Test kĩ trước khi nộp. Code nhìn đúng chưa chắc đúng đâu
 	\item Test conner case
+	\item Có overflow ko?
+	\item Đọc kĩ mô tả test
 	\item Giả sử nó là số nguyên tố đi. Giả sử nó liên quan tới số nguyên tố đi.\\
 	\item Giả sử nó là số có dạng \(2^n\) đi.\\
 	\item Giả sử chọn tối đa là 2, 3 số gì là có đáp án đi.\\
@@ -252,7 +280,7 @@ C(n,k)=number from line 0, column 0\\
 	\item Áp đại data struct nào đấy vô\\
 	\item khóc\\
 	\item Cầu nguyện\\
-	\item Random shuffe để ac\\
+	\item Random shuffe để AC\\
 	\item Xoay mảng 45 độ\\
 	\end{itemize}
 
