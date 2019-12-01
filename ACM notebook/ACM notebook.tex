@@ -63,6 +63,19 @@
 	\lstinputlisting[language=C++]{define.cpp}
 
 \section{Data structure}
+	\subsection{Mo's algorithm}
+\[O(N * \sqrt{N} + Q * \sqrt{N}) \]
+	\begin{lstlisting}[language=C++]
+S = sqrt(N);
+bool cmp(Query A, Query B) // compare 2 queries
+{
+  if (A.l / S != B.l / S) {
+    return A.l / S < B.l / S;
+  }
+  return A.r < B.r;
+}
+\end{lstlisting}
+
 	\subsection{AVL tree}
 	\lstinputlisting[language=C++]{AVL.cpp}
 	
