@@ -1,5 +1,5 @@
 void convex_hull (vector<pt> & a) {
-  if (a.size() == 1) { // chỉ có 1 điểm
+  if (a.size() == 1) { // Only 1 point
     return;
   }
 
