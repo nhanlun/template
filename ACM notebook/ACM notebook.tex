@@ -9,6 +9,7 @@
 \usepackage{multicol}
 \usepackage{indentfirst}
 \usepackage{breqn}
+\usepackage{pdflscape}
 
 %\usepackage{mathtools}
 %\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
@@ -17,17 +18,18 @@
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegreener}{rgb}{0,0.7,0}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.9,0.9,0.9}
+\definecolor{backcolour}{rgb}{1,1,1}
 \definecolor{codeblue}{rgb}{0.1,0.457,1} 
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{HCMUS-KMN}
 \rhead{Page \thepage}
-\cfoot{Notebook}
+%\cfoot{Notebook}
 
 
 \lstdefinestyle{mystyle}{
+	language=C++,
     backgroundcolor=\color{backcolour},
     commentstyle=\color{codegreen},
     keywordstyle=\color{codeblue},
@@ -55,6 +57,7 @@
 
 \begin{document}
 
+	\begin{landscape}
 	\begin{multicols}{2}
 	\tableofcontents
 	\small
@@ -75,29 +78,26 @@ bool cmp(Query A, Query B) // compare 2 queries
   return A.r < B.r;
 }
 \end{lstlisting}
-
-	\subsection{AVL tree}
-	\lstinputlisting[language=C++]{AVL.cpp}
 	
 	\subsection{Set and map}
 	Use set.lower_bound() instead of lower_bound(set.begin(), set.end()) for better performance \\
 	The same is true for map
 	
 	\subsection{BIT}
-	\lstinputlisting[language=C++]{BIT.cpp}
+	\lstinputlisting{BIT.cpp}
 	
 	\subsection{IT2D}
-	\lstinputlisting[language=C++]{IT2D.cpp}
+	\lstinputlisting{IT2D.cpp}
 
 \section{Graph}
 	\subsection{Dinic}
-	\lstinputlisting[language=C++]{Dinic.cpp}
+	\lstinputlisting{Dinic.cpp}
 
 	\subsection{Mincost}
-	\lstinputlisting[language=C++]{mincost.cpp}
+	\lstinputlisting{mincost.cpp}
 	
 	\subsection{HLD}
-	\lstinputlisting[language=C++]{HLD.cpp}
+	\lstinputlisting{HLD.cpp}
 	
 	\subsection{Cầu khớp}
 Nút u là khớp: 
@@ -111,19 +111,19 @@ Cạnh u, v là cầu khi low[v] >= num[v]
 	
 \section{String}
 	\subsection{Aho Corasick}
-	\lstinputlisting[language=C++]{AhoCorasick.cpp}
+	\lstinputlisting{AhoCorasick.cpp}
 	
 	\subsection{Manacher}
-	\lstinputlisting[language=C++]{Manacher.cpp}
+	\lstinputlisting{Manacher.cpp}
 	
 	\subsection{Suffix Array}
-	\lstinputlisting[language=C++]{suffixarray.cpp}
+	\lstinputlisting{suffixarray.cpp}
 	
 	\subsection{Z function}
-	\lstinputlisting[language=C++]{zfunction.cpp}
+	\lstinputlisting{zfunction.cpp}
 	
 	\subsection{KMP}
-	\lstinputlisting[language=C++]{KMP.cpp}
+	\lstinputlisting{KMP.cpp}
 	
 	\subsection{Hash 2D}
 	\begin{dmath}
@@ -178,28 +178,28 @@ Cạnh u, v là cầu khi low[v] >= num[v]
     where $r=\sqrt{a^2+b^2}, \phi=\operatorname{atan2}(b,a)$.
 
 	\subsection{Gaussian elimination}
-	\lstinputlisting[language=C++]{Gaussian.cpp}	    
+	\lstinputlisting{Gaussian.cpp}	    
 
 	\subsection{Geometry}
-	\lstinputlisting[language=C++]{geometry.cpp}
+	\lstinputlisting{geometry.cpp}
 	
 	\subsection{Miller Rabin}
-	\lstinputlisting[language=C++]{MillerRabin.cpp}
+	\lstinputlisting{MillerRabin.cpp}
 
 	\subsection{Chinese Remainer}
-	\lstinputlisting[language=C++]{Chinese.cpp}
+	\lstinputlisting{Chinese.cpp}
 	
 	\subsection{Extended Euclid}
-	\lstinputlisting[language=C++]{ExtendedEuclid.cpp}
+	\lstinputlisting{ExtendedEuclid.cpp}
 
 	\subsection{FFT}
-	\lstinputlisting[language=C++]{fft.cpp}
+	\lstinputlisting{fft_handmade.cpp}
 	
 	\subsection{Hungarian}
-	\lstinputlisting[language=C++]{Hungarian.cpp}
+	\lstinputlisting{Hungarian.cpp}
 
 	\subsection{PollardRho}
-	\lstinputlisting[language=C++]{PollardRho.cpp}
+	\lstinputlisting{PollardRho.cpp}
 
 \section{Theorem}
 	\subsection{Fermat's little theorem}
@@ -227,13 +227,13 @@ Cạnh u, v là cầu khi low[v] >= num[v]
 
 \section{Other}
 	\subsection{Bignum mul}
-	\lstinputlisting[language=C++]{bignum.cpp}
+	\lstinputlisting{bignum.cpp}
 	
 	\subsection{Random}
-	\lstinputlisting[language=C++]{random.cpp}
+	\lstinputlisting{random.cpp}
 	
 	\subsection{Builtin bit function}
-	\lstinputlisting[language=C++]{bitfunction.cpp}
+	\lstinputlisting{bitfunction.cpp}
 	
 	\subsection{Pythagorean triples}
 	c under 100 there are 16 triples:
@@ -291,8 +291,6 @@ C(n,k)=number from line 0, column 0\\
 	\item Chia nhỏ ra xem.\\
 	\item Bỏ hết những thằng ko cần thiết ra\\
 	\item Áp đại data struct nào đấy vô\\
-	\item khóc\\
-	\item Cầu nguyện\\
 	\item Random shuffe để AC\\
 	\item Xoay mảng 45 độ\\
 	\end{itemize}
@@ -303,4 +301,5 @@ C(n,k)=number from line 0, column 0\\
 	\Huge
 	\textcolor{blue}{\textbf{Keep Smilling}} \\
 	\textcolor{blue}{Gotta solve them all}
+	\end{landscape}
 \end{document}
