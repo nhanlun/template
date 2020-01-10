@@ -1,36 +1,37 @@
 namespace FFT
 {
-    using cd = complex<double>;
-    const int MaxN = 1 << 18;
+    struct cd
+    {
+        double real, img;
+        cd(double x = 0, double y = 0) : real(x), img(y) {}
+        cd operator+(const cd& src) { return cd(real + src.real, img + src.img); }
+        cd operator-(const cd& src) { return cd(real - src.real, img - src.img); }
+        cd operator*(const cd& src) { return cd(real * src.real - img * src.img, real * src.img + src.real * img); }
+    };
+    cd conj(const cd& x) { return cd(x.real, -x.img); }
+    const int MaxN = 1 << 15;
     const double PI = acos(-1);
-    cd w[MaxN];
-    int rev[MaxN];
+    cd w[MaxN]; int rev[MaxN];
 
-    void FFT(vector<cd>& a, bool invert)
+    void initFFT()
+    {
+        for (int i = 0; i < MaxN; ++i) 
+            w[i] = cd(cos(2 * PI * i / MaxN), sin(2 * PI * i / MaxN));
+    }
+    void FFT(vector<cd>& a)
     {
         int n = a.size(); 
-        vector<cd> b(n);
-        for (int i = 0; i < n; ++i)
-            b[i] = a[rev[i]];
-        swap(a, b);
-        w[0] = cd(1);
+        for (int i = 0; i < n; ++i) 
+            if (rev[i] < i) swap(a[i], a[rev[i]]);
+        
         for (int len = 2; len <= n; len <<= 1)
-        {
-            double ang = 2 * PI / len * (invert ? -1 : 1);
-            cd wlen(cos(ang), sin(ang));
-            for (int j = 1; j < (len >> 1); ++j) w[j] = w[j - 1] * wlen;
             for (int i = 0; i < n; i += len)
-            {
                 for (int j = 0; j < (len >> 1); ++j)
                 {
-                    cd u = a[i + j], v = a[i + j + (len >> 1)] * w[j];
+                    cd u = a[i + j], v = a[i + j + (len >> 1)] * w[MaxN / len * j];
                     a[i + j] = u + v;
                     a[i + j + (len >> 1)] = u - v;
                 }
-            }
-        }
-        if (invert)
-            for (auto& i : a) i /= n;
     }
     void calcRev(int n)
     {
@@ -44,19 +45,17 @@ namespace FFT
         int n = max(a.size(), b.size());
         if (__builtin_popcount(n) != 1) n = 1 << (33 - __builtin_clz(n));
 
-        vector<cd> pa(n), pb(n);
-        copy(a.begin(), a.end(), pa.begin());
-        copy(b.begin(), b.end(), pb.begin());
+        vector<cd> pa(a.begin(), a.end()); pa.resize(n);
+        vector<cd> pb(b.begin(), b.end()); pb.resize(n);
         
         calcRev(n); // Doesn't need to call multiple times
 
-        FFT(pa, false);
-        FFT(pb, false);
-        transform(pa.begin(), pa.end(), pb.begin(), pa.begin(), multiplies<cd>());
-        FFT(pa, true);
-
+        FFT(pa); FFT(pb);
+        for (int i = 0; i < n; ++i) pa[i] = conj(pa[i] * pb[i]);
+        FFT(pa);
+        //output of pa will be conj of the real answer
         vector<long long> res(n);
-        transform(pa.begin(), pa.end(), res.begin(), [&](cd& x) { return llround(x.real()); });
+        for (int i = 0; i < n; ++i) res[i] = llround(pa[i].real / n);
         return res;
     }
 };
