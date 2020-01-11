@@ -1,4 +1,4 @@
-namespace Dinic // really fast
+namespace Dinic // really fast, O(n^2 m) or O(sqrt(n)m) if bipartite
 {
     vector<int> adj[N];
     long long c[N][N], f[N][N];
