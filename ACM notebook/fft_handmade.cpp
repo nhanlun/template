@@ -42,8 +42,8 @@ namespace FFT
     }
     vector<long long> polymul(const vector<int>& a, const vector<int>& b)
     {
-        int n = max(a.size(), b.size());
-        if (__builtin_popcount(n) != 1) n = 1 << (33 - __builtin_clz(n));
+        int n = a.size() + b.size() - 1;
+        if (__builtin_popcount(n) != 1) n = 1 << (32 - __builtin_clz(n));
 
         vector<cd> pa(a.begin(), a.end()); pa.resize(n);
         vector<cd> pb(b.begin(), b.end()); pb.resize(n);
