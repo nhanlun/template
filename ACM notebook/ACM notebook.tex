@@ -99,10 +99,10 @@ bool cmp(Query A, Query B) // compare 2 queries
 	\subsection{HLD}
 	\lstinputlisting{HLD.cpp}
 	
-	\subsection{Cầu khớp}
-Nút u là khớp: 
-if (low[v] >= num[u]) arti[u] = arti[u] || p[u] != -1 || child[u] >= 2;\\
-Cạnh u, v là cầu khi low[v] >= num[v]
+	\subsection{Tarjan}
+If u is articulation: \\
+if (low[v] $>=$ num[u]) arti[u] = arti[u] or p[u] $!=$ -1 or child[u] $>=$ 2; \\
+If (u, v) is bridge: $low[v] >= num[v]$
 	\subsection{Monotone chain}
 	\lstinputlisting[language=C++]{monotone.cpp}
 
@@ -130,6 +130,9 @@ Cạnh u, v là cầu khi low[v] >= num[v]
 	
 	\subsection{KMP}
 	\lstinputlisting{KMP.cpp}
+	
+	\subsection{Hash}
+	\lstinputlisting{Hash.cpp}
 	
 	\subsection{Hash 2D}
 	\begin{dmath}
