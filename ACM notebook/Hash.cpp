@@ -34,6 +34,14 @@ struct Hash
   }
 };
 
+bool operator<(const Hash& a, const Hash& b)
+{
+  for (int i = 0; i < Bases; ++i) 
+    if (a.a[i] < b.a[i]) return true;
+    else if (a.a[i] > b.a[i]) return false;
+    return false;
+}
+
 Hash hash1[N], hash2[N]; 
 void initHash(int n)
 {
@@ -43,7 +51,7 @@ void initHash(int n)
 
 void calcHash(int n)
 {
-  for (int j = 0; j < Bases; ++j) hash1[j].a[0] = 0;
+  for (int j = 0; j < Bases; ++j) hash1[0].a[j] = 0;
   for (int i = 1; i <= n; ++i) hash1[i] = hash1[i - 1] * 1 + (s[i] - 'a');
 }
 

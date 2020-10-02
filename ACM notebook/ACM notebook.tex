@@ -236,6 +236,9 @@ If (u, v) is bridge: $low[v] >= num[v]$
 	Factor $n!$
 	\[v_p(n!) = \sum_{i = 1}^{\infty} \left \lfloor \frac{n}{p ^ i} \right \rfloor \]
 	With $p$ is prime
+	
+	\subsection{Stirling's approximation}
+	\[n! \approx \sqrt{2\pi n} * (\frac{n}{e}) ^ n\]
 
 \section{Other}
 	\subsection{Bignum mul}
@@ -265,7 +268,7 @@ If (u, v) is bridge: $low[v] >= num[v]$
 (160, 231, 281)	(161, 240, 289)	(68, 285, 293)
 
 	\subsection{Sieve}
-	for (int j = i; j * i <= lim; ++j) notPrime[j * i] = true
+	\lstinputlisting{Sieve.cpp}
 
 	\subsection{Catalan}
 	\[\frac{(2n)!}{(n + 1)!n!} = \prod_{k = 2}^n \frac{n + k}{k} \]
@@ -309,9 +312,5 @@ C(n,k)=number from line 0, column 0\\
 
 	\end{multicols}
 
-	\centering
-	\Huge
-	\textcolor{blue}{\textbf{Keep Smilling}} \\
-	\textcolor{blue}{Gotta solve them all}
 	\end{landscape}
 \end{document}
