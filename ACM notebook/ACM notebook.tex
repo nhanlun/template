@@ -1,6 +1,6 @@
-\documentclass[A4 paper, 12pt, oneside]{article}
+\documentclass[A4 paper, 12pt, oneside, landscape]{article}
 
-\usepackage[a4paper,left=1cm,right=0.8cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage[a4paper,left=0.8cm,right=0.8cm,top=1.8cm,bottom=0.7cm]{geometry}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage[utf8]{vietnam}
@@ -11,10 +11,6 @@
 \usepackage{breqn}
 \usepackage{pdflscape}
 
-%\usepackage{mathtools}
-%\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
-%\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
-
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegreener}{rgb}{0,0.7,0}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -23,7 +19,7 @@
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\lhead{HCMUS-KMN}
+\lhead{VNUHCM - University of Science, HCMUS-Senowa notebook}
 \rhead{Page \thepage}
 %\cfoot{Notebook}
 
@@ -57,7 +53,6 @@
 
 \begin{document}
 
-	\begin{landscape}
 	\begin{multicols}{2}
 	\tableofcontents
 	\small
@@ -67,21 +62,33 @@
 
 \section{Data structure}
 	\subsection{Mo's algorithm}
-\[O(N * \sqrt{N} + Q * \sqrt{N}) \]
+    \[O(N * \sqrt{N} + Q * \sqrt{N}) \]
 	\begin{lstlisting}[language=C++]
-S = sqrt(N);
-bool cmp(Query A, Query B) // compare 2 queries
-{
-  if (A.l / S != B.l / S) {
-    return A.l / S < B.l / S;
-  }
-  return A.r < B.r;
-}
-\end{lstlisting}
+    S = sqrt(N);
+    bool cmp(Query A, Query B) // compare 2 queries
+    {
+      if (A.l / S != B.l / S) {
+        return A.l / S < B.l / S;
+      }
+      return A.r < B.r;
+    }
+    \end{lstlisting}
 	
-	\subsection{Set and map}
-	Use set.lower_bound() instead of lower_bound(set.begin(), set.end()) for better performance \\
-	The same is true for map
+	\subsection{Set, map, multiset}
+	Use set.lower_bound() instead of lower_bound(set.begin(), set.end()) for better performance. The same is true for map. \par 
+	Set and map is sorted internally, so *s.begin() will be the smallest element and *s.rbegin() will be the largest element. \par 
+	If you want to remove 1 occurrence of 1 value in the multiset, use s.erase(s.find(value)). If we use s.erase(value), the multiset will erase all occurrence of that value in the multiset.
+	
+	\subsection{Bitset}
+	Order positions are counted from the rightmost bit, which is order position 0. \par 
+	Bitset can use bit operator like normal number. \par
+	If bitset is const-qualified then the return value of [] operator is bool, otherwise it is bitset::reference. \par
+	set() sets all value in bitset to 1. set(pos, val) sets value at pos to val (can throw out of bound). \par
+	reset() resets all value in bitset to 0. reset(pos) resets value at pos to 0 (can throw out of bound). \par 
+	flip() flips all bits in bitset. flip(pos) flips bit at pos. \par 
+	all() returns true if all bits are set. none() returns true if no bit is set. any() returns true if any of the bits is set. \par 
+	count() returns the number of bits which are set. \par 
+	test(pos) returns true if the bit at pos is set.
 	
 	\subsection{BIT}
 	\lstinputlisting{BIT.cpp}
@@ -143,6 +150,37 @@ If (u, v) is bridge: $low[v] >= num[v]$
 	\end{dmath}
 
 \section{Math}	
+    \subsection{Inverse of 2x2 matrix}
+    \begin{align*}
+        \begin{bmatrix}
+        a & b \\
+        c & d \\
+        \end{bmatrix} ^ {-1} = \frac{1}{ad - bc}
+        \begin{bmatrix}
+            d & -b \\
+            -c & a \\
+        \end{bmatrix}
+    \end{align*}
+    
+    \subsection{Sum of divisors}
+    If $n = p^{e_1}_1 * p^{e_2}_2 * \dots * p^{e_k}_k$, then
+    \begin{align*}
+        sum = \frac{p^{e_1 + 1}_1 - 1}{p_1 - 1} * \frac{p^{e_2 + 1}_2 - 1}{p_2 - 1} * \dots * \frac{p^{e_k + 1}_k - 1}{p_k - 1}
+    \end{align*}
+    
+    \subsection{Pisano period}
+    $\pi(n) \leq 6n.$ $\pi(n) = 6n$ when $n = 2 \times 5^r$ for $r > 1$. \par 
+    $\pi(2) = 3, \pi(5) = 20$. \par 
+    If $m$ and $n$ are coprime, $\pi(mn) = LCM(\pi(m), \pi(n))$. \par
+    If $p$ is prime, $\pi(p^k)$ divides $p^{k - 1} \times \pi(p)$. It is conjectured that $\pi(p^k) = p^{k - 1} \times \pi(p)$ for $k > 1$. \par
+    If $p \equiv 1 \ mod \ 10$ or $p \equiv 9 \ mod \ 10$, $\pi(p)$ is divisor of $p - 1$. \par 
+    If $p \equiv 3 \ mod \ 10$ or $p \equiv 7 \ mod \ 10$, $\pi(p)$ is divisor of $2(p + 1)$.
+    
+    \subsection{Number Theory}
+    \begin{align*}
+        a + b = a \oplus b + 2 \times (a \wedge b)
+    \end{align*}
+    
 	\subsection{Derivatives and integrals}
 	\begin{align*}
         \dfrac{d}{dx}\ln{u} = \dfrac{u'}{u} &&& \dfrac{d}{dx}\dfrac{1}{u} = -\dfrac{u'}{u^2} \\
@@ -186,17 +224,22 @@ If (u, v) is bridge: $low[v] >= num[v]$
     \end{align*}
     where $r=\sqrt{a^2+b^2}, \phi=\operatorname{atan2}(b,a)$.
 
-    \subsection{Number Theory}
-    \begin{align*}
-        a + b = a \oplus b + 2 \times (a \wedge b) \\
-        (a \div b) \% c = a \times b^{c - 2}
-    \end{align*}
-
+    \subsection{Inverse}
+    Calculate inverse for [1, m - 1]. O(m). m is prime
+    \begin{lstlisting}
+inv[1] = 1;
+for(int i = 2; i < m; ++i)
+    inv[i] = m - (m/i) * inv[m%i] % m;
+    \end{lstlisting}
+    
 	\subsection{Gaussian elimination}
 	\lstinputlisting{Gaussian.cpp}	    
 
 	\subsection{Geometry}
 	\lstinputlisting{geometry.cpp}
+	
+	\subsection{Discrete logarithm}
+	\lstinputlisting{discreteLog.cpp}
 	
 	\subsection{Miller Rabin}
 	\lstinputlisting{MillerRabin.cpp}
@@ -220,10 +263,17 @@ If (u, v) is bridge: $low[v] >= num[v]$
 	If $a$ is not divisible by $p$ \\
 	\[a ^ {p - 1} \equiv 1 \ (mod \ p)\] 
 	
+	\subsection{Euler's theorem}
+	If $a$ and $n$ are coprime, then 
+	\[a ^ {\phi(n)} \equiv 1 \ (mod \ n) \]
+	
 	\subsection{Euler's totient function}
 	The number of coprime $\leq n$ \\
 	\[\phi(n) = n \prod (1 - \frac{1}{p}) \] \\
 	With $p$ is the prime divided by $n$
+	
+	\subsection{Goldbach's conjecture}
+	Every even number greater than 2 is the sum of 2 primes. \(\leq 4 * 10^{18}\)
 	
 	\subsection{Dirichlet}
 	Given $n$ holes and $n + 1$ pigeons to distribute evenly, then at least $1$ hole must have $2$ pigeons
@@ -239,8 +289,15 @@ If (u, v) is bridge: $low[v] >= num[v]$
 	
 	\subsection{Stirling's approximation}
 	\[n! \approx \sqrt{2\pi n} * (\frac{n}{e}) ^ n\]
+	
+	\subsection{Wilson's theorem}
+	$n > 1$ is a prime if and only if 
+	\[ (n - 1)! \ mod \ n \equiv -1 \ mod \ n \]
 
 \section{Other}
+    \subsection{Matrix}
+    \lstinputlisting{matrix.cpp}
+
 	\subsection{Bignum mul}
 	\lstinputlisting{bignum.cpp}
 	
@@ -270,11 +327,44 @@ If (u, v) is bridge: $low[v] >= num[v]$
 	\subsection{Sieve}
 	\lstinputlisting{Sieve.cpp}
 
+    \subsection{Factorial mod}
+    \begin{lstlisting}
+int factmod(int n, int p) {
+    vector<int> f(p);
+    f[0] = 1;
+    for (int i = 1; i < p; i++)
+        f[i] = f[i-1] * i % p;
+
+    int res = 1;
+    while (n > 1) {
+        if ((n/p) % 2)
+            res = p - res;
+        res = res * f[n%p] % p;
+        n /= p;
+    }
+    return res; 
+}
+    \end{lstlisting}
+
 	\subsection{Catalan}
 	\[\frac{(2n)!}{(n + 1)!n!} = \prod_{k = 2}^n \frac{n + k}{k} \]
+	The Catalan number Cn is the solution for
+	\begin{itemize}
+	    \item Number of correct bracket sequence consisting of $n$ opening and n closing brackets.
+	    \item The number of rooted full binary trees with $n+1$ leaves (vertices are not numbered). A rooted binary tree is full if every vertex has either two children or no children.
+	    \item The number of ways to completely parenthesize $n+1$ factors.
+	    \item The number of triangulations of a convex polygon with $n+2$ sides (i.e. the number of partitions of polygon into disjoint triangles by using the diagonals).
+	    \item The number of ways to connect the $2n$ points on a circle to form n disjoint chords.
+	    \item The number of non-isomorphic full binary trees with $n$ internal nodes (i.e. nodes having at least one son).
+	    \item The number of monotonic lattice paths from point (0,0) to point (n,n) in a square lattice of size $n \times n$, which do not pass above the main diagonal (i.e. connecting (0,0) to (n,n)).
+	    \item Number of permutations of length $n$ that can be stack sorted (i.e. it can be shown that the rearrangement is stack sorted if and only if there is no such index $i<j<k$, such that $a_k<a_i<a_j$ ).
+	    \item The number of non-crossing partitions of a set of $n$ elements.
+        \item The number of ways to cover the ladder $1...n$ using $n$ rectangles (The ladder consists of $n$ columns, where $i^{th}$ column has a height $i$).
+	\end{itemize}
 
 	\subsection{Prime under 100}
 	2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97 
+	
 	\subsection{Pascal triangle}
 C(n,k)=number from line 0, column 0\\
 1\\
@@ -292,25 +382,27 @@ C(n,k)=number from line 0, column 0\\
 	0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765
 	\section{Tips}
 	\begin{itemize}[topsep=0pt, partopsep=0pt, itemsep=0pt]
-	\item Test kĩ trước khi nộp. Code nhìn đúng chưa chắc đúng đâu
-	\item Test conner case
-	\item Có overflow ko?
-	\item Đọc kĩ mô tả test
-	\item Giả sử nó là số nguyên tố đi. Giả sử nó liên quan tới số nguyên tố đi.\\
-	\item Giả sử nó là số có dạng \(2^n\) đi.\\
-	\item Giả sử chọn tối đa là 2, 3 số gì là có đáp án đi.\\
-	\item Có liên quan gì tới Fibonacci hay tam giác pascal?\\
-	\item Dãy này đơn điệu không em ei? Hay tổng của 2,3 số fibonacci?\\
-	\item \(q \leq 2\)\\
-	\item Sort lại đi, biết đâu thấy điều hay hơn?\\
-	\item Chia nhỏ ra xem.\\
-	\item Bỏ hết những thằng ko cần thiết ra\\
-	\item Áp đại data struct nào đấy vô\\
-	\item Random shuffe để AC\\
-	\item Xoay mảng 45 độ\\
+	\item 5' debug vẫn nhanh hơn 20' penalty
+	\item Giả sử nó là số nguyên tố đi. Giả sử nó liên quan tới số nguyên tố đi.
+	\item Giả sử nó là số có dạng $2^n$ đi.
+	\item Giả sử chọn tối đa là 2, 3 số gì là có đáp án đi.
+	\item Có liên quan gì tới Fibonacci hay tam giác pascal?
+	\item Dãy này đơn điệu không em ei? Hay tổng của 2, 3 số fibonacci?
+	\item Chia nhỏ ra xem.
+	\item Random shuffe để AC
+	\item Xoay mảng 45 độ
+	\item Tạo đỉnh ảo cho đồ thị (vd như Kruskal)
+	\item Tìm t thỏa điều kiện nào đó thì chặt
+	\item Merge set thì phải merge từ set nhỏ sang lớn ko thì TLE
+	\item Xử lý ma trận cũng giống xử lý số bình thường, các phép nhân chia mod đều như cũ
+	\item Làm luồng nhớ push cung ngược
 	\end{itemize}
 
 	\end{multicols}
 
-	\end{landscape}
+    \begin{figure}
+        \centering
+        \includegraphics{renai.png}
+    \end{figure}
+
 \end{document}
