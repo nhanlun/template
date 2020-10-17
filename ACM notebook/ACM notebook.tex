@@ -95,6 +95,9 @@
 	
 	\subsection{IT2D}
 	\lstinputlisting{IT2D.cpp}
+	
+	\subsection{Li Chao Tree}
+	\lstinputlisting{LiChaoTree.cpp}
 
 \section{Graph}
 	\subsection{Dinic}
@@ -280,7 +283,12 @@ for(int i = 2; i < m; ++i)
 	
 	\subsection{Pythagorean triple}
 	\[a = m^2 - n^2, \ b = 2mn, \ c = m^2 + n^2 \] \\
-	where $m$ and $n$ are positive integer with $m > n$, and with $m$ and $n$ are coprime and not both odd.
+	Where $m$ and $n$ are positive integer with $m > n$, and with $m$ and $n$ are coprime and not both odd. When both m and n are odd, then a, b, and c will be even, and the triple will not be primitive; however, dividing a, b, and c by 2 will yield a primitive triple when m and n are coprime and both odd.
+	
+	Despite generating all primitive triples, Euclid's formula does not produce all triples—for example, (9, 12, 15) cannot be generated using integer m and n. This can be remedied by inserting an additional parameter k to the formula. The following will generate all Pythagorean triples uniquely:
+
+    \[a=k (m^{2}-n^{2}),\ \,b=k (2mn),\ \,c=k (m^{2}+n^{2}) \]
+    Where $m$, $n$, and $k$ are positive integers with $m > n$, and with $m$ and $n$ coprime and not both odd.
 	
 	\subsection{Legendre's formula}
 	Factor $n!$
