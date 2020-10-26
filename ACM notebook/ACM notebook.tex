@@ -96,6 +96,9 @@
 	\subsection{IT2D}
 	\lstinputlisting{IT2D.cpp}
 	
+	\subsection{Peristent IT}
+	\lstinputlisting{PersistentIT.cpp}
+	
 	\subsection{Li Chao Tree}
 	\lstinputlisting{LiChaoTree.cpp}
 
@@ -140,6 +143,29 @@ If (u, v) is bridge: $low[v] >= num[v]$
 	
 	\subsection{KMP}
 	\lstinputlisting{KMP.cpp}
+	
+	\subsection{Lexicographically minimal string rotation}
+	\begin{lstlisting}
+def least_rotation(S: str) -> int:
+  """Booth's algorithm."""
+  S += S  // Concatenate string to it self to avoid modular arithmetic
+  f = [-1] * len(S)  // Failure function
+  k = 0  // Least rotation of string found so far
+  for j in range(1, len(S)):
+    sj = S[j]
+    i = f[j - k - 1]
+    while i != -1 and sj != S[k + i + 1]:
+      if sj < S[k + i + 1]:
+        k = j - i - 1
+      i = f[i]
+    if sj != S[k + i + 1]:  // if sj != S[k+i+1], then i == -1
+      if sj < S[k]:  # k+i+1 = k
+        k = j
+      f[j - k] = -1
+    else:
+      f[j - k] = i + 1
+  return k
+	\end{lstlisting}
 	
 	\subsection{Hash}
 	\lstinputlisting{Hash.cpp}
@@ -246,6 +272,9 @@ for(int i = 2; i < m; ++i)
 	
 	\subsection{Miller Rabin}
 	\lstinputlisting{MillerRabin.cpp}
+	
+	\subsection{Miller Rabin Deterministic}
+	\lstinputlisting{MillerRabinRR.cpp}
 
 	\subsection{Chinese Remainer}
 	\lstinputlisting{Chinese.cpp}
@@ -398,12 +427,14 @@ C(n,k)=number from line 0, column 0\\
 	\item Dãy này đơn điệu không em ei? Hay tổng của 2, 3 số fibonacci?
 	\item Chia nhỏ ra xem.
 	\item Random shuffe để AC
-	\item Xoay mảng 45 độ
+	\item Xoay mảng 45 độ (thường liên quan đến Manhattan)
 	\item Tạo đỉnh ảo cho đồ thị (vd như Kruskal)
 	\item Tìm t thỏa điều kiện nào đó thì chặt
 	\item Merge set thì phải merge từ set nhỏ sang lớn ko thì TLE
 	\item Xử lý ma trận cũng giống xử lý số bình thường, các phép nhân chia mod đều như cũ
 	\item Làm luồng nhớ push cung ngược
+	\item Nếu xử lý liên quan đến bit thì có thể nó liên quan tới Trie
+	\item Số nguyên tố thường có dạng $6k \pm 1$ trừ 2 và 3
 	\end{itemize}
 
 	\end{multicols}
