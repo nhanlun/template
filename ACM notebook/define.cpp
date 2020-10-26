@@ -21,7 +21,13 @@ const long long mod = 1000000007LL;
 
 long long addi(long long a, long long b, long long m = mod) { a += b; if (a < 0) a += m; if (a >= m) a -= m; return a; }
 long long subt(long long a, long long b, long long m = mod) { a -= b; if (a < 0) a += m; if (a >= m) a -= m; return a; }
-long long mult(long long a, long long b, long long m = mod) { return a * b % m; }
+long long mult(long long a, long long b, long long m = mod) 
+{ 
+    if (b == 0) return 0;
+    long long tmp = mult(a, b >> 1, m);
+    tmp = addi(tmp, tmp, m);
+    return (b & 1) ? addi(tmp, a, m) : tmp;
+}
 long long power(long long a, long long b, long long m = mod) 
 {
     long long tmp = 1;
