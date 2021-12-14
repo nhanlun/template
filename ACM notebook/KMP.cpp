@@ -1,37 +1,28 @@
-// SUBSTR spoj
-string s, t;int pos[N];
-void build()
+void preCalc()
 {
-  pos[0] = -1;
-  int pre = -1, cur = 0;
-  while (cur < t.length())
+  int cur = -1;
+  pre[0] = -1;
+  for (int i = 1; i <= t.length(); ++i)
   {
-    while (pre >= 0 && t[cur] != t[pre])
-    {
-      pre = pos[pre];
-    }
-    pos[++cur] = ++pre;
+    while (cur >= 0 && t[i - 1] != t[cur]) cur = pre[cur];
+    pre[i] = ++cur; 
   }
 }
- 
+
 int main()
 {
-  cin >> s; cin >> t;
-  build();
+  cin >> s >> t;
+  preCalc();
   int cur = 0;
-  for (int i = 0; i < (int)s.length(); ++i)
+  for (int i = 0; i < s.length(); ++i) 
   {
-    while (cur >= 0 && s[i] != t[cur])
-    {
-      cur = pos[cur];
-    }
+    while (cur >= 0 && s[i] != t[cur]) cur = pre[cur];
     ++cur;
-    if (cur == (int)t.length())
+    if (cur == t.length()) 
     {
-      cout << i - (int)t.length() + 2 << ' ';
-      cur = pos[cur];
+      cout << i - t.length() + 2 << ' ';
+      cur = pre[cur];
     }
   }
- 
   return 0;
-} 
+}   

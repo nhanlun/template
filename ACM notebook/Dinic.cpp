@@ -1,56 +1,68 @@
-namespace Dinic // really fast, O(n^2 m) or O(sqrt(n)m) if bipartite
-{
-    vector<int> adj[N];
-    long long c[N][N], f[N][N];
-    int s = 0, t = 0, d[N], ptr[N];
-    bool BFS()
-    {
-        queue<int> q;
-        memset(d, -1, sizeof(d));
-        d[s] = 0; q.push(s);
-        while (!q.empty())
-        {
-            int u = q.front(); q.pop();
-            for (int v : adj[u])
-            {
-                if (d[v] == -1 && c[u][v] > f[u][v])
-                {
-                    d[v] = d[u] + 1;
-                    q.push(v);
-                }
+struct Edge {
+    int u, v, cap, flow;
+    Edge() {}
+    Edge(int u, int v, int cap, int flow) : u(u), v(v), cap(cap), flow(flow) {}
+};
+struct MaxFlow {
+    vector<int> d, ptr;
+    vector<vector<int>> g;
+    vector<Edge> e;
+    int n, s, t;
+    MaxFlow() {}
+    MaxFlow(int n) : n(n), d(n), ptr(n), g(n) {}
+    void addEdge(int u, int v, int cap) {
+        g[u].push_back(e.size());
+        e.push_back(Edge(u, v, cap, 0));
+        g[v].push_back(e.size());
+        e.push_back(Edge(v, u, cap, 0));
+    }
+    int maxflow(int s, int t) {
+        this->s = s;
+        this->t = t;
+        int flow = 0;
+        while (bfs()) {
+            while (int x = dfs(s, 1e9)) {
+                flow += x;
             }
+        }
+        return flow;
+    }
+
+private:
+    bool bfs() {
+        queue<int> q;
+        for (int i = 0; i < n; ++i)
+            ptr[i] = 0, d[i] = -1;
+        d[s] = 0;
+        q.push(s);
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            for (int id : g[u])
+                if (e[id].flow < e[id].cap) {
+                    int v = e[id].v;
+                    if (d[v] == -1) {
+                        d[v] = d[u] + 1;
+                        q.push(v);
+                    }
+                }
         }
         return d[t] != -1;
     }
-    long long DFS(int x, long long delta)
-    {
-        if (x == t) return delta;
-        for (; ptr[x] < adj[x].size(); ++ptr[x]) // Skip the used edge
-        {
-            int y = adj[x][ptr[x]];
-            if (d[y] == d[x] + 1 && c[x][y] > f[x][y])
-            {
-                long long push = DFS(y, min(delta, c[x][y] - f[x][y]));
-                if (push)
-                {
-                    f[x][y] += push;
-                    f[y][x] -= push;
-                    return push;
+    int dfs(int u, int flow) {
+        if (u == t)
+            return flow;
+        for (; ptr[u] < (int)g[u].size(); ++ptr[u]) {
+            int id = g[u][ptr[u]];
+            int v = e[id].v;
+            if (d[v] == d[u] + 1 && e[id].cap > e[id].flow) {
+                if (int x = dfs(v, min(flow, e[id].cap - e[id].flow))) {
+                    e[id].flow += x;
+                    e[id ^ 1].flow -= x;
+                    return x;
                 }
             }
         }
         return 0;
-    }
-    long long maxFlow(int x, int y) // From x to y
-    {
-        long long flow = 0;
-        s = x; t = y;
-        while (BFS())
-        {
-            memset(ptr, 0, sizeof(ptr)); 
-            while (long long tmp = DFS(s, 1e9))
-                flow += 1LL * tmp;
-        }
-        return flow;
     }
 };

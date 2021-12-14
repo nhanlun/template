@@ -3,8 +3,7 @@
 // n < 3,474,749,660,383          6 :  pirmes <= 13
 // n < 2^64                       7 :
 // 2, 325, 9375, 28178, 450775, 9780504, 1795265022
-// Make sure testing integer is in range [2, n−2] if
-// you want to use magic.
+// test number in range [2, n - 2] to use magic
 bool witness(long long a, long long n, long long u, int t) {
 	long long x = power(a, u, n);
 	for (int i = 0; i < t; i++) {
