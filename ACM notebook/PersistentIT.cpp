@@ -1,72 +1,55 @@
- 
-struct node{
-    int _time, ans;
-    node *l, *r;
-    node(): l(r=nullptr), _time(0), ans(1){}
+// IT sum, vector it contain the tree, vector version contain the root of different versions
+struct Node
+{
+  int l = -1, r = -1;
+  ll sum = 0;
+  Node(ll s, int _l, int _r) : sum(s), l(_l), r(_r) {}
+  Node() {}
 };
+vector<int> ver;
+vector<Node> it;
  
-int last[N], Local_time;
-vector <int> step[N];
-node *root[N];
-vector <pii> p[N];
- 
-void build(node *v, int tl, int tr){
-    if(tl != tr){
-        v -> l = new node();
-        v -> r = new node();
-        int tm = (tl + tr) >> 1;
-        build(v -> l, tl, tm);
-        build(v -> r, tm + 1, tr);
-    }
+int build(int l = 1, int r = n)
+{
+  if (l == r)
+  {
+    it.push_back(Node(a[l], -1, -1));
+    return it.size() - 1;
+  }
+  int mid = (l + r) >> 1;
+  Node cur;
+  cur.l = build(l, mid);
+  cur.r = build(mid + 1, r);
+  cur.sum = it[cur.l].sum + it[cur.r].sum;
+  it.push_back(cur);
+  return it.size() - 1;
 }
  
-void modify(node *v, int tl, int tr, int pos, pii fraction){
-    if(tl == tr){
-        v -> ans *= fraction.fi;
-        v -> ans /= fraction.se;
-    }else{
-        int tm = (tl + tr) >> 1;
-        if(pos <= tm){
-            if((v -> l) -> _time != Local_time){
-                node *old = v -> l;
-                v -> l = new node();
-                (v -> l) -> ans = old -> ans;
-                (v -> l) -> l = old -> l;
-                (v -> l) -> r = old -> r;
-                (v -> l) -> _time = Local_time;
-            }
-            modify(v -> l, tl, tm, pos, fraction);
-        }else{
-            if((v -> r) -> _time != Local_time){
-                node *old = v -> r;
-                v -> r = new node();
-                (v -> r) -> ans = old -> ans;
-                (v -> r) -> l = old -> l;
-                (v -> r) -> r = old -> r;
-                (v -> r) -> _time = Local_time;
-            }
-            modify(v -> r, tm + 1, tr, pos, fraction);
-        }
-        v -> ans = mul((v -> l) -> ans, (v -> r) -> ans);
-    }
+int update(int id, int u, int v, int l = 1, int r = n)
+{
+  if (l == r)
+  {
+    it.push_back(Node(v, -1, -1));
+    return it.size() - 1;
+  }
+  int mid = (l + r) >> 1;
+  if (u <= mid)
+  {
+    int tmp = update(it[id].l, u, v, l, mid);
+    it.push_back(Node(it[tmp].sum + it[it[id].r].sum, tmp, it[id].r));
+  }
+  else 
+  {
+    int tmp = update(it[id].r, u, v, mid + 1, r);
+    it.push_back(Node(it[it[id].l].sum + it[tmp].sum, it[id].l, tmp));
+  }
+  return it.size() - 1;
 }
  
-int get(node *v,  int tl, int tr, int l, int r){
-    if(l > r)return 1;
-    if(tl == l && tr == r)return v -> ans;
-    int tm = (tl + tr) >> 1;
-    return mul(get(v -> l, tl, tm, l, min(r, tm)), get(v -> r, tm + 1, tr, max(l, tm + 1), r));
+ll get(int id, int u, int v, int l = 1, int r = n)
+{
+  if (r < u || l > v) return 0;
+  if (l >= u && r <= v) return it[id].sum;
+  int mid = (l + r) >> 1;
+  return get(it[id].l, u, v, l, mid) + get(it[id].r, u, v, mid + 1, r);
 }
- 
-//for first version:
-root[0] = new node();
-build(root[0], 1, n);
-//when creating new version
-Local_time++;
-        root[i] = new node();
-        root[i] -> ans = root[i - 1] -> ans;
-        root[i] -> l = root[i - 1] -> l;
-        root[i] -> r = root[i - 1] -> r;
-        root[i] -> _time = Local_time;
-//when calling: modify(root[i], 1, n, pos, {vals});
-//when query: get(root[r], 1, n, l, r);
