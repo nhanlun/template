@@ -1,4 +1,4 @@
-\documentclass[A4 paper, 12pt, oneside, landscape]{article}
+\documentclass[a4paper, 12pt, oneside, landscape]{article}
 
 \usepackage[a4paper,left=0.8cm,right=0.8cm,top=1.8cm,bottom=0.7cm]{geometry}
 \usepackage{listings}
@@ -90,8 +90,8 @@
 	count() returns the number of bits which are set. \par 
 	test(pos) returns true if the bit at pos is set.
 	
-	\subsection{BIT}
-	\lstinputlisting{BIT.cpp}
+% 	\subsection{BIT}
+% 	\lstinputlisting{BIT.cpp}
 	
 	\subsection{IT2D}
 	\lstinputlisting{IT2D.cpp}
@@ -109,6 +109,9 @@
 	\subsection{Mincost}
 	\lstinputlisting{mincost.cpp}
 	
+	\subsection{Gomory Hu tree}
+	\lstinputlisting{gomoryhu.cpp}
+	
 	\subsection{HLD}
 	\lstinputlisting{HLD.cpp}
 	
@@ -118,6 +121,9 @@ if (low[v] $>=$ num[u]) arti[u] = arti[u] or p[u] $!=$ -1 or child[u] $>=$ 2; \\
 If (u, v) is bridge: $low[v] >= num[v]$
 	\subsection{Monotone chain}
 	\lstinputlisting[language=C++]{monotone.cpp}
+	
+	\subsubsection{Check a point inside convex hull}
+	\lstinputlisting[language=C++]{inside_monotone.cpp}
 
 	\subsection{MST}
 	Prim: remember to have visited array
@@ -127,6 +133,9 @@ If (u, v) is bridge: $low[v] >= num[v]$
 	
 	\subsection{Hungarian}
 	\lstinputlisting{Hungarian.cpp}
+	
+	\subsection{Euler cycle}
+	\lstinputlisting{Euler_cycle.cpp}
 	
 \section{String}
 	\subsection{Aho Corasick}
@@ -332,6 +341,9 @@ for(int i = 2; i < m; ++i)
 	\[ (n - 1)! \ mod \ n \equiv -1 \ mod \ n \]
 
 \section{Other}
+    \subsection{Iterate subset from a number}
+    \lstinputlisting{subset_from_number.cpp}
+
     \subsection{Matrix}
     \lstinputlisting{matrix.cpp}
 
@@ -430,16 +442,18 @@ C(n,k)=number from line 0, column 0\\
 	\item Xoay mảng 45 độ (thường liên quan đến Manhattan)
 	\item Tạo đỉnh ảo cho đồ thị (vd như Kruskal)
 	\item Tìm t thỏa điều kiện nào đó thì chặt
+	\item Tìm số thứ n thoả gì đó thì cũng chặt
 	\item Merge set thì phải merge từ set nhỏ sang lớn ko thì TLE
 	\item Xử lý ma trận cũng giống xử lý số bình thường, các phép nhân chia mod đều như cũ
 	\item Làm luồng nhớ push cung ngược
 	\item Nếu xử lý liên quan đến bit thì có thể nó liên quan tới Trie
 	\item Số nguyên tố thường có dạng $6k \pm 1$ trừ 2 và 3
+	\item Không biết làm thì dẹp, ngủ 30 phút rồi biết làm, đừng cố mò đường trong brain fog.
 	\end{itemize}
 
 	\end{multicols}
 
-    \begin{figure}
+    \begin{figure}[ht]
         \centering
         \includegraphics{renai.png}
     \end{figure}

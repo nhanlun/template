@@ -9,8 +9,6 @@
 #define CROSS(a, b, c, d) (a * d - b * c)
  
 using namespace std;
-const int N = 1000005;
-const int M = 30000;
  
 const int Bases = 2;
 const long long base[] = {137, 37};
