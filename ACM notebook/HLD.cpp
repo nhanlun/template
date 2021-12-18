@@ -1,37 +1,50 @@
-void DFS(int x,int pa)
-{
-  DD[x]=DD[pa]+1; child[x]=1; int Max=0;
-  for (int i=0; i<DSK[x].size(); i++)
-  {
-    int y=DSK[x][i].fi;
-    if (y==pa) continue;
-    p[y]=x;
-    d[y]=d[x]+DSK[x][i].se;
-    DFS(y,x);
-    child[x]+=child[y];
-    if (child[y]>Max)
-    {
-      Max=child[y];
-      tree[x]=tree[y];
+void dfs(int u) {
+    child[u] = 1; // number of nodes in subtree u
+    int maxChild = 0;
+    for (int v : adj[u]) {
+        if (v != parent[u]) {
+            parent[v] = u, depth[v] = depth[u] + 1;
+            dfs(v);
+            child[u] += child[v];
+            // save the child with maximum nodes, this helps the number of branches reduce to logn branches
+            if (child[v] > maxChild)
+                maxChild = child[v], heavy[u] = v; 
+        }
     }
-  }
-  if (child[x]==1) tree[x]=++nTree;
 }
 
-void init()
-{
-  nTree=0;
-  DFS(1,1);
-  DD[0]=long(1e9);
-  for (int i=1; i<=n; i++) if (DD[i]<DD[root[tree[i]]]) root[tree[i]]=i;
+void decompose(int u, int r) {
+    // the head array save the root of the branch
+    head[u] = r, pos[u] = ++TIME;
+    // the flatten array contains flatten branches and subtree are next to each other
+    flatten[TIME] = u;
+    tin[u] = TIME; // this is for time in
+    if (heavy[u] != -1)
+        decompose(heavy[u], h);
+    for (int v : adj[u]) {
+        if (v != parent[u] && v != heavy[u])
+            decompose(v, v);
+    }
+    tout[v] = cur_pos; // this is for time out
 }
 
-int LCA(int u,int v)
-{
-  while (tree[u]!=tree[v])
-  {
-    if (DD[root[tree[u]]]<DD[root[tree[v]]]) v=p[root[tree[v]]];
-    else u=p[root[tree[u]]];
-  }
-  if (DD[u]<DD[v]) return u; else return v;
+void init() {
+    TIME = 0;
+    dfs(1);
+    decompose(1, 1);
+}
+// example of querying max value from a to b using IT
+int query(int a, int b) {
+    int res = 0;
+    for (; head[a] != head[b]; b = parent[head[b]]) {
+        if (depth[head[a]] > depth[head[b]])
+            swap(a, b);
+        int cur_heavy_path_max = segment_tree_query(pos[head[b]], pos[b]);
+        res = max(res, cur_heavy_path_max);
+    }
+    if (depth[a] > depth[b])
+        swap(a, b);
+    int last_heavy_path_max = segment_tree_query(pos[a], pos[b]);
+    res = max(res, last_heavy_path_max);
+    return res;
 }
