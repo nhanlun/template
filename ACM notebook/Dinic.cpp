@@ -2,6 +2,7 @@ struct Edge {
   int u, v, cap, flow;
   Edge() {}
   Edge(int u, int v, int cap, int flow) : u(u), v(v), cap(cap), flow(flow) {}
+  int remain() { return flow - cap; }
 };
 struct MaxFlow {
   vector<int> d, ptr;

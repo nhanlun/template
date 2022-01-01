@@ -11,14 +11,13 @@ struct GomoryHuTree {
                 dfs(v);
         }
     }
-#define pi pair<int, int>
-    vector<pi> Solve(int n, vector<Edge> &e) {
-        vector<pi> ret(n); // if i > 0 store <parent, cost>
+    vector<pii> Solve(int n, vector<Edge> &e) {
+        vector<pii> ret(n); // if i > 0 store <parent, cost>
         mf = MaxFlow(n);
         vis.resize(n);
         for (Edge &edge : e) {
             // Undirect edge
-            mf.addEdge(edge.u, edge.v, edge.c);
+            mf.addEdge(edge.u, edge.v, edge.cap);
         }
         for (int i = 1; i < n; ++i) {
             // Reset flow
